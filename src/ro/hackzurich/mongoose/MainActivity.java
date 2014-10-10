@@ -28,6 +28,13 @@ public class MainActivity extends ActionBarActivity implements
 	 * {@link #restoreActionBar()}.
 	 */
 	private CharSequence mTitle;
+	
+	private int[] fragments = {
+		R.layout.fragment_challenges,
+		R.layout.fragment_notifications,
+		R.layout.fragment_pendings,
+		R.layout.fragment_logout
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +60,13 @@ public class MainActivity extends ActionBarActivity implements
 		fragmentManager
 				.beginTransaction()
 				.replace(R.id.container,
-						PlaceholderFragment.newInstance(position + 1)).commit();
+						PlaceholderFragment.newInstance(
+								position + 1,
+								fragments[position])).commit();
 	}
 
 	public void onSectionAttached(int number) {
-		/*
+		/* Don't delete this, maybe we'll need it later
 		switch (number) {
 		case 1:
 			mTitle = getString(R.string.title_section1);
@@ -113,15 +122,21 @@ public class MainActivity extends ActionBarActivity implements
 		 * fragment.
 		 */
 		private static final String ARG_SECTION_NUMBER = "section_number";
+		
+		private static int fragmentId;
 
 		/**
 		 * Returns a new instance of this fragment for the given section number.
 		 */
-		public static PlaceholderFragment newInstance(int sectionNumber) {
+		public static PlaceholderFragment newInstance(int sectionNumber, 
+				int fragmentId) {
 			PlaceholderFragment fragment = new PlaceholderFragment();
 			Bundle args = new Bundle();
 			args.putInt(ARG_SECTION_NUMBER, sectionNumber);
 			fragment.setArguments(args);
+			
+			PlaceholderFragment.fragmentId = fragmentId;
+			
 			return fragment;
 		}
 
@@ -131,8 +146,7 @@ public class MainActivity extends ActionBarActivity implements
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main, container,
-					false);
+			View rootView = inflater.inflate(fragmentId, container, false);
 			return rootView;
 		}
 
