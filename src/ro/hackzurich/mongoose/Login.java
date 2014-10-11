@@ -30,6 +30,8 @@ public class Login extends FragmentActivity {
 	 public void onActivityResult(int requestCode, int resultCode, Intent data) {
          userSettingsFragment.onActivityResult(requestCode, resultCode, data);
          super.onActivityResult(requestCode, resultCode, data);
+         Intent mainActivityIntent = new Intent(this, MainActivity.class);
+         startActivity(mainActivityIntent);
 	 }
 	
 }
