@@ -1,5 +1,11 @@
 package ro.hackzurich.mongoose;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import ro.hackzurich.mongoose.settings.Settings;
 import android.app.Activity;
 import android.os.Bundle;
@@ -29,6 +35,8 @@ public class MainActivity extends ActionBarActivity implements
 	 * {@link #restoreActionBar()}.
 	 */
 	private CharSequence mTitle;
+	
+	HttpURLConnection connection;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +52,8 @@ public class MainActivity extends ActionBarActivity implements
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 				(DrawerLayout) findViewById(R.id.drawer_layout));
 	}
+	
+	
 
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {

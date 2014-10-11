@@ -1,9 +1,15 @@
 package ro.hackzurich.mongoose;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,14 +75,18 @@ public class FragmentsController {
 					"first challenge",
 					"second challenge"
 				});
+		
+		
 		lstvwChallenges.setAdapter(adapter);
 		
+		/*
 		lstvwChallenges.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				Toast.makeText(activity, "pressed", Toast.LENGTH_SHORT).show();
+			//	Toast.makeText(activity, "pressed", Toast.LENGTH_SHORT).show();
 			}
 		});
+		*/
 	}
 
 	private void setUpNotificationsFragment() {
@@ -97,6 +107,61 @@ public class FragmentsController {
 	private void setUpRanking() {
 		TextView tv = (TextView) activity.findViewById(R.id.txtvwRanking);
 		tv.setText("Ranking Programatically");
+		
+		sendGet();
 	}
 
+	// HTTP GET request
+	private void sendGet() {
+		String urlString = "http://172.27.5.129:8080/mongoose/webresources/" + 
+				"ro.hackzurich.mongoose.entity.challenge";
+		URL url = null;
+		
+		try {
+			url = new URL(urlString);
+		} catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		new AsyncTask<URL, Integer, Long>() {
+
+			@Override
+			protected Long doInBackground(URL... params) {
+				URL url = params[0];
+				HttpURLConnection con;
+				
+				try {
+					con = (HttpURLConnection) url.openConnection();
+					
+					// optional default is GET
+					con.setRequestMethod("GET");
+			 
+					//add request header
+					con.setRequestProperty("User-Agent", "Mozilla/5.0");
+			 
+					int responseCode = con.getResponseCode();
+			 
+					BufferedReader in = new BufferedReader(
+					        new InputStreamReader(con.getInputStream()));
+					String inputLine;
+					StringBuffer response = new StringBuffer();
+			 
+					while ((inputLine = in.readLine()) != null) {
+						response.append(inputLine);
+					}
+					in.close();
+			 
+					//print result
+					Log.e("MONGOOSE", "response = " + response);
+				} catch (IOException e) {
+					Log.e("MONGOOSE", "Connection error: " + e);
+					e.printStackTrace();
+				}
+				 
+				return null;
+			}
+		}.execute(url);
+	}
+	
 }
