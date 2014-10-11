@@ -1,18 +1,22 @@
 package ro.hackzurich.mongoose;
 
+import ro.hackzurich.mongoose.settings.Settings;
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
+import android.webkit.WebView.FindListener;
+import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -28,13 +32,6 @@ public class MainActivity extends ActionBarActivity implements
 	 * {@link #restoreActionBar()}.
 	 */
 	private CharSequence mTitle;
-	
-	private int[] fragments = {
-		R.layout.fragment_challenges,
-		R.layout.fragment_notifications,
-		R.layout.fragment_pendings,
-		R.layout.fragment_logout
-	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +47,8 @@ public class MainActivity extends ActionBarActivity implements
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 				(DrawerLayout) findViewById(R.id.drawer_layout));
 		
-		Log.i("MONGOOSE", "onCreate");
+		// Set up the fragments
+	//	new FragmentsController(this);
 	}
 
 	@Override
@@ -62,7 +60,7 @@ public class MainActivity extends ActionBarActivity implements
 				.replace(R.id.container,
 						PlaceholderFragment.newInstance(
 								position + 1,
-								fragments[position])).commit();
+								Settings.getFragmentIds()[position])).commit();
 	}
 
 	public void onSectionAttached(int number) {
@@ -140,7 +138,13 @@ public class MainActivity extends ActionBarActivity implements
 			return fragment;
 		}
 
-		public PlaceholderFragment() {
+		public PlaceholderFragment() {}
+		
+		@Override
+		public void onAttach(Activity activity) {
+			super.onAttach(activity);
+			((MainActivity) activity).onSectionAttached(getArguments().getInt(
+					ARG_SECTION_NUMBER));
 		}
 
 		@Override
@@ -149,12 +153,11 @@ public class MainActivity extends ActionBarActivity implements
 			View rootView = inflater.inflate(fragmentId, container, false);
 			return rootView;
 		}
-
+		
 		@Override
-		public void onAttach(Activity activity) {
-			super.onAttach(activity);
-			((MainActivity) activity).onSectionAttached(getArguments().getInt(
-					ARG_SECTION_NUMBER));
+		public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+			super.onActivityCreated(savedInstanceState);
+			new FragmentsController(getActivity(), fragmentId);
 		}
 	}
 
