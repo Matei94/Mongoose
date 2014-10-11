@@ -3,7 +3,7 @@ package ro.hackzurich.mongoose.settings;
 import ro.hackzurich.mongoose.*;
 
 public class Settings {
-	private static String username = "Username";
+	private static String username = "";
 	private static int score = 42;
 	private static String userId = "23";
 

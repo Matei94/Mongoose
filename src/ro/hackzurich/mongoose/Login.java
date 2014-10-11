@@ -1,13 +1,17 @@
 package ro.hackzurich.mongoose;
 
+import ro.hackzurich.mongoose.settings.Settings;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
 import com.facebook.widget.UserSettingsFragment;
 
 public class Login extends FragmentActivity {
@@ -34,6 +38,17 @@ public class Login extends FragmentActivity {
          userSettingsFragment.onActivityResult(requestCode, resultCode, data);
          super.onActivityResult(requestCode, resultCode, data);
          Intent mainActivityIntent = new Intent(this, MainActivity.class);
-         startActivity(mainActivityIntent);
+         
+         Request.newMeRequest(Session.getActiveSession(), new com.facebook.Request.GraphUserCallback() {
+			
+        	 	@Override
+				public void onCompleted(GraphUser user, Response response) {
+					if (user != null) {
+						Settings.setUsername(user.getName());
+					}
+				}
+		}).executeAsync();
+         
+        startActivity(mainActivityIntent);
 	 }
 }

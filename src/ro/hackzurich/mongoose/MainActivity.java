@@ -32,11 +32,6 @@ public class MainActivity extends ActionBarActivity implements
 	 */
 	private NavigationDrawerFragment mNavigationDrawerFragment;
 
-	/**
-	 * Used to store the last screen title. For use in
-	 * {@link #restoreActionBar()}.
-	 */
-	private CharSequence mTitle;
 	
 	HttpURLConnection connection;
 
@@ -59,8 +54,6 @@ public class MainActivity extends ActionBarActivity implements
 
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
-
-		mTitle = Settings.getUsername();
 
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
@@ -93,15 +86,12 @@ public class MainActivity extends ActionBarActivity implements
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
 		actionBar.setDisplayShowTitleEnabled(true);
-		actionBar.setTitle(mTitle);
+		actionBar.setTitle(Settings.getUsername());
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		if (!mNavigationDrawerFragment.isDrawerOpen()) {
-			// Only show items in the action bar relevant to this screen
-			// if the drawer is not showing. Otherwise, let the drawer
-			// decide what to show in the action bar.
 			getMenuInflater().inflate(R.menu.main, menu);
 			restoreActionBar();
 			return true;
