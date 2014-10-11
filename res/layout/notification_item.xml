@@ -4,7 +4,7 @@
     android:layout_height="wrap_content" >
 
     <ImageView
-        android:id="@+id/imgvwChallenge"
+        android:id="@+id/imgvwNotification"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginLeft="5dp"
@@ -15,7 +15,7 @@
     </ImageView>
 
     <TextView
-        android:id="@+id/txtvwChallenge"
+        android:id="@+id/txtvwNotification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
     </TextView>

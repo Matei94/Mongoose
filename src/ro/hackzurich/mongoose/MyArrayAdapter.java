@@ -7,11 +7,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ChallengeArrayAdapter extends ArrayAdapter<String> {
+public class MyArrayAdapter extends ArrayAdapter<String> {
   private final Context context;
   private final String[] values;
 
-  public ChallengeArrayAdapter(Context context, String[] values) {
+  public MyArrayAdapter(Context context, String[] values) {
     super(context, R.layout.challenge_item, values);
     
     this.context = context;

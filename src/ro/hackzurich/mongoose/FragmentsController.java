@@ -10,6 +10,9 @@ import java.net.URL;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,7 +73,7 @@ public class FragmentsController {
 		ListView lstvwChallenges = 
 				(ListView) activity.findViewById(R.id.lstvwChallenges);
 		
-		ChallengeArrayAdapter adapter = new ChallengeArrayAdapter(activity,
+		MyArrayAdapter adapter = new MyArrayAdapter(activity,
 				new String[] {
 					"first challenge",
 					"second challenge"
@@ -79,24 +82,57 @@ public class FragmentsController {
 		
 		lstvwChallenges.setAdapter(adapter);
 		
-		/*
-		lstvwChallenges.setOnClickListener(new OnClickListener() {
+		lstvwChallenges.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onClick(View arg0) {
-			//	Toast.makeText(activity, "pressed", Toast.LENGTH_SHORT).show();
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Toast.makeText(activity, "selected " + arg2, Toast.LENGTH_SHORT).show();
 			}
 		});
-		*/
 	}
 
 	private void setUpNotificationsFragment() {
-		TextView tv = (TextView) activity.findViewById(R.id.txtvwNotifications);
-		tv.setText("Notifications Programatically");
+		ListView lstvwChallenges = 
+				(ListView) activity.findViewById(R.id.lstvwNotifications);
+		
+		MyArrayAdapter adapter = new MyArrayAdapter(activity,
+				new String[] {
+					"first notification",
+					"second notification"
+				});
+		
+		
+		lstvwChallenges.setAdapter(adapter);
+		
+		lstvwChallenges.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Toast.makeText(activity, "selected " + arg2, Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 	
 	private void setUpPendingsFragment() {
-		TextView tv = (TextView) activity.findViewById(R.id.txtvwPendings);
-		tv.setText("Pendings Programatically");
+		ListView lstvwChallenges = 
+				(ListView) activity.findViewById(R.id.lstvwPendings);
+		
+		MyArrayAdapter adapter = new MyArrayAdapter(activity,
+				new String[] {
+					"first pending",
+					"second pending"
+				});
+		
+		
+		lstvwChallenges.setAdapter(adapter);
+		
+		lstvwChallenges.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				Toast.makeText(activity, "selected " + arg2, Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 	
 	private void setUpLogOutFragment() {
