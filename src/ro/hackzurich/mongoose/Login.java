@@ -1,14 +1,14 @@
 package ro.hackzurich.mongoose;
 
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.widget.UserSettingsFragment;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.widget.UserSettingsFragment;
 
 public class Login extends FragmentActivity {
 	 private UserSettingsFragment userSettingsFragment;
