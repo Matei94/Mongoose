@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gcm.GCMRegistrar;
+
 public class MainActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -30,15 +32,27 @@ public class MainActivity extends ActionBarActivity implements
 	 */
 	private CharSequence mTitle;
 
+	/**
+	 * Used to store the unique registration id for the GCM service.
+	 */
+	private String regId;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		// GCM
+		GCMRegistrar.checkDevice(this);
+		regId = GCMRegistrar.getRegistrationId(this);
+		if (regId != null && regId.length() == 0) {
+			GCMRegistrar.register(this, Constants.GCM_SENDER_ID);
+		}
+
 		mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.navigation_drawer);
-		
-		mTitle = Settings.getUsername(); 
+
+		mTitle = Settings.getUsername();
 
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
@@ -51,26 +65,20 @@ public class MainActivity extends ActionBarActivity implements
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager
 				.beginTransaction()
-				.replace(R.id.container,
-						PlaceholderFragment.newInstance(
-								position + 1,
-								FragmentsController.getFragmentIds()[position])).commit();
+				.replace(
+						R.id.container,
+						PlaceholderFragment.newInstance(position + 1,
+								FragmentsController.getFragmentIds()[position]))
+				.commit();
 	}
 
 	public void onSectionAttached(int number) {
-		/* Don't delete this, maybe we'll need it later
-		switch (number) {
-		case 1:
-			mTitle = getString(R.string.title_section1);
-			break;
-		case 2:
-			mTitle = getString(R.string.title_section2);
-			break;
-		case 3:
-			mTitle = getString(R.string.title_section3);
-			break;
-		}
-		*/
+		/*
+		 * Don't delete this, maybe we'll need it later switch (number) { case
+		 * 1: mTitle = getString(R.string.title_section1); break; case 2: mTitle
+		 * = getString(R.string.title_section2); break; case 3: mTitle =
+		 * getString(R.string.title_section3); break; }
+		 */
 	}
 
 	public void restoreActionBar() {
@@ -114,26 +122,27 @@ public class MainActivity extends ActionBarActivity implements
 		 * fragment.
 		 */
 		private static final String ARG_SECTION_NUMBER = "section_number";
-		
+
 		private static int fragmentId;
 
 		/**
 		 * Returns a new instance of this fragment for the given section number.
 		 */
-		public static PlaceholderFragment newInstance(int sectionNumber, 
+		public static PlaceholderFragment newInstance(int sectionNumber,
 				int fragmentId) {
 			PlaceholderFragment fragment = new PlaceholderFragment();
 			Bundle args = new Bundle();
 			args.putInt(ARG_SECTION_NUMBER, sectionNumber);
 			fragment.setArguments(args);
-			
+
 			PlaceholderFragment.fragmentId = fragmentId;
-			
+
 			return fragment;
 		}
 
-		public PlaceholderFragment() {}
-		
+		public PlaceholderFragment() {
+		}
+
 		@Override
 		public void onAttach(Activity activity) {
 			super.onAttach(activity);
@@ -147,7 +156,7 @@ public class MainActivity extends ActionBarActivity implements
 			View rootView = inflater.inflate(fragmentId, container, false);
 			return rootView;
 		}
-		
+
 		@Override
 		public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState);
