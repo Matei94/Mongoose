@@ -14,6 +14,8 @@ import ro.hackzurich.mongoose.entity.Cause;
 import ro.hackzurich.mongoose.entity.CauseWrapper;
 import ro.hackzurich.mongoose.entity.Notification;
 import ro.hackzurich.mongoose.entity.NotificationWrapper;
+import ro.hackzurich.mongoose.entity.Pending;
+import ro.hackzurich.mongoose.entity.PendingWrapper;
 import ro.hackzurich.mongoose.settings.Settings;
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -30,8 +32,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class FragmentsController {
+	/* ListViews data*/
 	private List<String> challengesList = new ArrayList<String>();
 	private List<String> notificationsList = new ArrayList<String>();
+	private List<String> pendingsList = new ArrayList<String>();
+	
 	
 	/* Needed for findViewById */
 	private Activity activity;
@@ -81,27 +86,6 @@ public class FragmentsController {
 
 	public static String[] getFragmentNames() {
 		return fragmentNames;
-	}
-	
-	private void setUpPendingsFragment() {
-		ListView lstvwChallenges = 
-				(ListView) activity.findViewById(R.id.lstvwPendings);
-		
-		MyArrayAdapter adapter = new MyArrayAdapter(activity,
-				new String[] {
-					"first pending",
-					"second pending"
-				});
-		
-		lstvwChallenges.setAdapter(adapter);
-		
-		lstvwChallenges.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				Toast.makeText(activity, "selected " + arg2, Toast.LENGTH_SHORT).show();
-			}
-		});
 	}
 	
 	private void setUpLogOutFragment() {
@@ -222,8 +206,8 @@ public class FragmentsController {
 	
 	private void setUpNotificationsFragment() {
 		String urlString = "http://172.27.5.129:8080/mongoose/webresources/" + 
-				"ro.hackzurich.mongoose.entity.notification/" + 
-				Settings.getUserId() + "/notifications";
+				"ro.hackzurich.mongoose.entity.notification/user/" + 
+				Settings.getUserId();
 		URL url = null;
 		
 		try {
@@ -292,6 +276,88 @@ public class FragmentsController {
 				lstvwNotifications.setAdapter(adapter);
 				
 				lstvwNotifications.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+							long arg3) {
+						Toast.makeText(activity, "selected " + arg2, Toast.LENGTH_SHORT).show();
+					}
+				});
+			};
+		}.execute(url);
+	}
+	
+	private void setUpPendingsFragment() {
+		String urlString = "http://172.27.5.129:8080/mongoose/webresources/" + 
+				"ro.hackzurich.mongoose.entity.challenge/" + 
+				Settings.getUserId() + "/pending";
+		URL url = null;
+		
+		try {
+			url = new URL(urlString);
+		} catch (MalformedURLException e1) {
+			e1.printStackTrace();
+		}
+		
+		new AsyncTask<URL, Integer, Long>() {
+
+			@Override
+			protected Long doInBackground(URL... params) {
+				URL url = params[0];
+				HttpURLConnection con;
+				
+				try {
+					con = (HttpURLConnection) url.openConnection();
+					con.setRequestMethod("GET");
+					con.setRequestProperty("User-Agent", "Mozilla/5.0");
+			 
+					int responseCode = con.getResponseCode();
+			 
+					BufferedReader in = new BufferedReader(
+					        new InputStreamReader(con.getInputStream()));
+					String inputLine;
+					StringBuffer response = new StringBuffer();
+			 
+					while ((inputLine = in.readLine()) != null) {
+						response.append(inputLine);
+					}
+					in.close();
+					
+					PendingWrapper pw;
+					try {
+						pw = PendingWrapper.fromJson(
+							"{\"pendingList\":" + response + "}");
+					} catch (Exception e) {
+						Log.e("MONGOOSE", "catch " + response);
+						return 1L;
+					}
+					
+					Log.e("MONGOOSE", "response: " + pw);
+			 
+					List<Pending> pendingList = pw.pendingList;
+					
+					for(Pending p : pendingList) {
+						pendingsList.add(p.toString());
+					}
+				} catch (IOException e) {
+					Log.e("MONGOOSE", "Connection error: " + e);
+					e.printStackTrace();
+				}
+				 
+				return null;
+			}
+			
+			protected void onPostExecute(Long result) {
+				ListView lstvwPendings = 
+						(ListView) activity.findViewById(R.id.lstvwPendings);
+				
+				if (lstvwPendings == null) return;
+				
+				MyArrayAdapter adapter = new MyArrayAdapter(activity, 
+						pendingsList.toArray(new String[0]));
+				
+				lstvwPendings.setAdapter(adapter);
+				
+				lstvwPendings.setOnItemClickListener(new OnItemClickListener() {
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 							long arg3) {

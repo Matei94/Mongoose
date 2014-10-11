@@ -12,6 +12,7 @@ import com.facebook.widget.UserSettingsFragment;
 
 public class Login extends FragmentActivity {
 	 private UserSettingsFragment userSettingsFragment;
+	 private final String TAG = "LOGIN";
 
 	 public void onCreate(Bundle savedInstanceState) {
          super.onCreate(savedInstanceState);
@@ -25,6 +26,8 @@ public class Login extends FragmentActivity {
              }
          });
 	 }
+	 
+	 
 
 	 @Override
 	 public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -33,5 +36,4 @@ public class Login extends FragmentActivity {
          Intent mainActivityIntent = new Intent(this, MainActivity.class);
          startActivity(mainActivityIntent);
 	 }
-	
 }
