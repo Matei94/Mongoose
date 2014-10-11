@@ -4,8 +4,9 @@
     tools:context="ro.hackzurich.mongoose.MainActivity" >
 
     <item
-        android:id="@+id/action_example"
-        android:title="@string/action_example"
+        android:id="@+id/btnScore"
+        android:title="Score: 0"
+        android:checkable="false"
         app:showAsAction="withText|ifRoom"/>
     <item
         android:id="@+id/action_settings"

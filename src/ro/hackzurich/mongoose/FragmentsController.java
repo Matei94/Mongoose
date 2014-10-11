@@ -36,13 +36,16 @@ public class FragmentsController {
 		case R.layout.fragment_logout:
 			setUpLogOutFragment();
 			break;
+		case R.layout.ranking:
+			setUpRanking();
+			break;
 		default:
 			Log.d("MONGOOSE", "Unexpected behaviour. fragmentId = " + 
 					fragmentId);
 			break;
 		}
 	}
-	
+
 	/* Getters */
 	public static int[] getFragmentIds() {
 		return fragmentIds;
@@ -73,4 +76,9 @@ public class FragmentsController {
 		tv.setText("LogOut Programatically");
 	}
 	
+	private void setUpRanking() {
+		TextView tv = (TextView) activity.findViewById(R.id.txtvwRanking);
+		tv.setText("Ranking Programatically");
+	}
+
 }

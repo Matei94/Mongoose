@@ -43,9 +43,6 @@ public class MainActivity extends ActionBarActivity implements
 		// Set up the drawer.
 		mNavigationDrawerFragment.setUp(R.id.navigation_drawer,
 				(DrawerLayout) findViewById(R.id.drawer_layout));
-		
-		// Set up the fragments
-	//	new FragmentsController(this);
 	}
 
 	@Override

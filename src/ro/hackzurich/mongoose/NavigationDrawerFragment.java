@@ -1,5 +1,6 @@
 package ro.hackzurich.mongoose;
 
+import ro.hackzurich.mongoose.MainActivity.PlaceholderFragment;
 import ro.hackzurich.mongoose.settings.Settings;
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -8,10 +9,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -266,6 +269,14 @@ public class NavigationDrawerFragment extends Fragment {
 			inflater.inflate(R.menu.global, menu);
 			showGlobalContextActionBar();
 		}
+		
+		MenuItem btnScore = menu.findItem(R.id.btnScore);
+		try {
+			btnScore.setTitle("Score: " + Settings.getScore());
+		} catch (NullPointerException e) {
+			Log.d("MONGOOSE", "I don't know why this happen");
+		}
+		
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
@@ -275,9 +286,18 @@ public class NavigationDrawerFragment extends Fragment {
 			return true;
 		}
 
-		if (item.getItemId() == R.id.action_example) {
+		if (item.getItemId() == R.id.btnScore) {
 			Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT)
 					.show();
+			
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager
+					.beginTransaction()
+					.replace(R.id.container,
+							PlaceholderFragment.newInstance(
+									FragmentsController.getFragmentIds().length + 1,
+									R.layout.ranking)).commit();
+			
 			return true;
 		}
 

@@ -1096,15 +1096,15 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f050023;
         public static final int action_bar_title=0x7f050022;
         public static final int action_context_bar=0x7f05001d;
-        public static final int action_example=0x7f050045;
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_settings=0x7f050044;
+        public static final int action_settings=0x7f050045;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
         public static final int btnLogin=0x7f050043;
+        public static final int btnScore=0x7f050046;
         public static final int checkbox=0x7f05002d;
         public static final int collapseActionView=0x7f05000d;
         public static final int container=0x7f05003d;
@@ -1155,6 +1155,7 @@ containing a value of this type.
         public static final int txtvwLogout=0x7f050040;
         public static final int txtvwNotifications=0x7f050041;
         public static final int txtvwPendings=0x7f050042;
+        public static final int txtvwRanking=0x7f050044;
         public static final int up=0x7f050021;
         public static final int useLogo=0x7f050003;
         public static final int withText=0x7f05000c;
@@ -1216,7 +1217,8 @@ containing a value of this type.
         public static final int fragment_notifications=0x7f03001c;
         public static final int fragment_pendings=0x7f03001d;
         public static final int login=0x7f03001e;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001f;
+        public static final int ranking=0x7f03001f;
+        public static final int support_simple_spinner_dropdown_item=0x7f030020;
     }
     public static final class menu {
         public static final int global=0x7f0c0000;
