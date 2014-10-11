@@ -7,6 +7,18 @@ import android.widget.TextView;
 public class FragmentsController {
 	/* Needed for findViewById */
 	private Activity activity;
+	
+	private static int[] fragmentIds = {
+		R.layout.fragment_challenges,
+		R.layout.fragment_notifications,
+		R.layout.fragment_pendings,
+		R.layout.fragment_logout };
+
+	private static String[] fragmentNames = {
+		"Challenges",
+		"Notifications",
+		"Pendings",
+		"Log out" };
 
 	public FragmentsController(Activity activity, int fragmentId) {
 		this.activity = activity;
@@ -31,6 +43,16 @@ public class FragmentsController {
 		}
 	}
 	
+	/* Getters */
+	public static int[] getFragmentIds() {
+		return fragmentIds;
+	}
+
+	public static String[] getFragmentNames() {
+		return fragmentNames;
+	}
+	
+	/* Set ups */
 	private void setUpChallengesFragment() {
 		TextView tv = (TextView) activity.findViewById(R.id.txtvwChallenges);
 		tv.setText("Challenges Programatically");

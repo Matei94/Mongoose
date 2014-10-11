@@ -9,14 +9,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
-import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity implements
 		NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -60,7 +57,7 @@ public class MainActivity extends ActionBarActivity implements
 				.replace(R.id.container,
 						PlaceholderFragment.newInstance(
 								position + 1,
-								Settings.getFragmentIds()[position])).commit();
+								FragmentsController.getFragmentIds()[position])).commit();
 	}
 
 	public void onSectionAttached(int number) {

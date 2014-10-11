@@ -110,7 +110,7 @@ public class NavigationDrawerFragment extends Fragment {
 		
 		mDrawerListView.setAdapter(new ArrayAdapter<String>(getActionBar()
 				.getThemedContext(), android.R.layout.simple_list_item_1,
-				android.R.id.text1, Settings.getFragmentNames()));
+				android.R.id.text1, FragmentsController.getFragmentNames()));
 		
 		mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 		return mDrawerListView;
