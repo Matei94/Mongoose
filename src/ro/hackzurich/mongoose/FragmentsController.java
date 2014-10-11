@@ -2,7 +2,11 @@ package ro.hackzurich.mongoose;
 
 import android.app.Activity;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class FragmentsController {
 	/* Needed for findViewById */
@@ -57,8 +61,22 @@ public class FragmentsController {
 	
 	/* Set ups */
 	private void setUpChallengesFragment() {
-		TextView tv = (TextView) activity.findViewById(R.id.txtvwChallenges);
-		tv.setText("Challenges Programatically");
+		ListView lstvwChallenges = 
+				(ListView) activity.findViewById(R.id.lstvwChallenges);
+		
+		ChallengeArrayAdapter adapter = new ChallengeArrayAdapter(activity,
+				new String[] {
+					"first challenge",
+					"second challenge"
+				});
+		lstvwChallenges.setAdapter(adapter);
+		
+		lstvwChallenges.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				Toast.makeText(activity, "pressed", Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 
 	private void setUpNotificationsFragment() {
