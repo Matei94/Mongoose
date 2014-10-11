@@ -112,6 +112,7 @@ public class FragmentsController {
 	private void setUpRanking() {
 		TextView tv = (TextView) activity.findViewById(R.id.txtvwRanking);
 		Button btnAux = (Button) activity.findViewById(R.id.btnAux);
+		Button btnNicu = (Button) activity.findViewById(R.id.btnNicu);
 		
 		btnAux.setOnClickListener(new OnClickListener() {
 			@Override
@@ -127,6 +128,19 @@ public class FragmentsController {
 			}
 		});
 		
+		btnNicu.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FragmentManager fragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();
+				fragmentManager
+						.beginTransaction()
+						.replace(
+								R.id.container,
+								PlaceholderFragment.newInstance(0,
+										R.layout.unicu))
+						.commit();
+			}
+		});
 		
 		tv.setText("Ranking Programatically");
 	}
