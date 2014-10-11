@@ -6,6 +6,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import ro.hackzurich.mongoose.entity.Cause;
+import ro.hackzurich.mongoose.entity.CauseWrapper;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -18,6 +23,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class FragmentsController {
+	private static boolean fetchedCauses = false;
+	
+	private List<String> challengesList = new ArrayList<String>();
+	private List<String> notificationsList = new ArrayList<String>();
+	
 	/* Needed for findViewById */
 	private Activity activity;
 	
@@ -67,29 +77,6 @@ public class FragmentsController {
 	public static String[] getFragmentNames() {
 		return fragmentNames;
 	}
-	
-	/* Set ups */
-	private void setUpChallengesFragment() {
-		ListView lstvwChallenges = 
-				(ListView) activity.findViewById(R.id.lstvwChallenges);
-		
-		MyArrayAdapter adapter = new MyArrayAdapter(activity,
-				new String[] {
-					"first challenge",
-					"second challenge"
-				});
-		
-		
-		lstvwChallenges.setAdapter(adapter);
-		
-		lstvwChallenges.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				Toast.makeText(activity, "selected " + arg2, Toast.LENGTH_SHORT).show();
-			}
-		});
-	}
 
 	private void setUpNotificationsFragment() {
 		ListView lstvwChallenges = 
@@ -123,7 +110,6 @@ public class FragmentsController {
 					"second pending"
 				});
 		
-		
 		lstvwChallenges.setAdapter(adapter);
 		
 		lstvwChallenges.setOnItemClickListener(new OnItemClickListener() {
@@ -143,20 +129,16 @@ public class FragmentsController {
 	private void setUpRanking() {
 		TextView tv = (TextView) activity.findViewById(R.id.txtvwRanking);
 		tv.setText("Ranking Programatically");
-		
-		sendGet();
 	}
 
-	// HTTP GET request
-	private void sendGet() {
+	private void setUpChallengesFragment() {
 		String urlString = "http://172.27.5.129:8080/mongoose/webresources/" + 
-				"ro.hackzurich.mongoose.entity.challenge";
+				"ro.hackzurich.mongoose.entity.cause";
 		URL url = null;
 		
 		try {
 			url = new URL(urlString);
 		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -169,11 +151,7 @@ public class FragmentsController {
 				
 				try {
 					con = (HttpURLConnection) url.openConnection();
-					
-					// optional default is GET
 					con.setRequestMethod("GET");
-			 
-					//add request header
 					con.setRequestProperty("User-Agent", "Mozilla/5.0");
 			 
 					int responseCode = con.getResponseCode();
@@ -187,9 +165,17 @@ public class FragmentsController {
 						response.append(inputLine);
 					}
 					in.close();
+					
+					CauseWrapper cw = CauseWrapper.fromJson(
+							"{\"causeList\":" + response + "}");
+					
+					Log.e("MONGOOSE", "response: " + cw);
 			 
-					//print result
-					Log.e("MONGOOSE", "response = " + response);
+					List<Cause> causeList = cw.causeList;
+					
+					for(Cause c : causeList) {
+						challengesList.add(c.toString());
+					}
 				} catch (IOException e) {
 					Log.e("MONGOOSE", "Connection error: " + e);
 					e.printStackTrace();
@@ -197,7 +183,28 @@ public class FragmentsController {
 				 
 				return null;
 			}
+			
+			protected void onPostExecute(Long result) {
+				ListView lstvwChallenges = 
+						(ListView) activity.findViewById(R.id.lstvwChallenges);
+				
+				if (lstvwChallenges == null) return;
+				
+				MyArrayAdapter adapter = new MyArrayAdapter(activity, 
+						challengesList.toArray(new String[0]));
+				
+				lstvwChallenges.setAdapter(adapter);
+				
+				lstvwChallenges.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+							long arg3) {
+						Toast.makeText(activity, "selected " + arg2, Toast.LENGTH_SHORT).show();
+					}
+				});
+			};
 		}.execute(url);
 	}
+	
 	
 }
