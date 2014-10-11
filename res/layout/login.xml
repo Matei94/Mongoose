@@ -8,12 +8,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ro.hackzurich.mongoose.MainActivity$PlaceholderFragment" >
 
-    <Button
+     <fragment android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:id="@+id/login_fragment"
+        android:name="com.facebook.widget.UserSettingsFragment" />
+     
+    <!--  <Button
         android:id="@+id/btnLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Login" />
+        android:text="Login" /> -->
 
 </RelativeLayout>
