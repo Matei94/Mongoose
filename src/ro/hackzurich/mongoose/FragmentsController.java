@@ -11,6 +11,8 @@ import java.util.List;
 
 import ro.hackzurich.mongoose.entity.Cause;
 import ro.hackzurich.mongoose.entity.CauseWrapper;
+import ro.hackzurich.mongoose.entity.Notification;
+import ro.hackzurich.mongoose.entity.NotificationWrapper;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -76,28 +78,6 @@ public class FragmentsController {
 
 	public static String[] getFragmentNames() {
 		return fragmentNames;
-	}
-
-	private void setUpNotificationsFragment() {
-		ListView lstvwChallenges = 
-				(ListView) activity.findViewById(R.id.lstvwNotifications);
-		
-		MyArrayAdapter adapter = new MyArrayAdapter(activity,
-				new String[] {
-					"first notification",
-					"second notification"
-				});
-		
-		
-		lstvwChallenges.setAdapter(adapter);
-		
-		lstvwChallenges.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				Toast.makeText(activity, "selected " + arg2, Toast.LENGTH_SHORT).show();
-			}
-		});
 	}
 	
 	private void setUpPendingsFragment() {
@@ -206,5 +186,84 @@ public class FragmentsController {
 		}.execute(url);
 	}
 	
-	
+	private void setUpNotificationsFragment() {
+		String urlString = "http://172.27.5.129:8080/mongoose/webresources/" + 
+				"ro.hackzurich.mongoose.entity.notification";
+		URL url = null;
+		
+		try {
+			url = new URL(urlString);
+		} catch (MalformedURLException e1) {
+			e1.printStackTrace();
+		}
+		
+		new AsyncTask<URL, Integer, Long>() {
+
+			@Override
+			protected Long doInBackground(URL... params) {
+				URL url = params[0];
+				HttpURLConnection con;
+				
+				try {
+					con = (HttpURLConnection) url.openConnection();
+					con.setRequestMethod("GET");
+					con.setRequestProperty("User-Agent", "Mozilla/5.0");
+			 
+					int responseCode = con.getResponseCode();
+			 
+					BufferedReader in = new BufferedReader(
+					        new InputStreamReader(con.getInputStream()));
+					String inputLine;
+					StringBuffer response = new StringBuffer();
+			 
+					while ((inputLine = in.readLine()) != null) {
+						response.append(inputLine);
+					}
+					in.close();
+					
+					NotificationWrapper nw;
+					try {
+						nw = NotificationWrapper.fromJson(
+							"{\"notificationList\":" + response + "}");
+					} catch (Exception e) {
+						Log.e("MONGOOSE", "catch " + response);
+						return 1L;
+					}
+					
+					Log.e("MONGOOSE", "response: " + nw);
+			 
+					List<Notification> notificationList = nw.notificationList;
+					
+					for(Notification n : notificationList) {
+						notificationsList.add(n.toString());
+					}
+				} catch (IOException e) {
+					Log.e("MONGOOSE", "Connection error: " + e);
+					e.printStackTrace();
+				}
+				 
+				return null;
+			}
+			
+			protected void onPostExecute(Long result) {
+				ListView lstvwNotifications = 
+						(ListView) activity.findViewById(R.id.lstvwNotifications);
+				
+				if (lstvwNotifications == null) return;
+				
+				MyArrayAdapter adapter = new MyArrayAdapter(activity, 
+						notificationsList.toArray(new String[0]));
+				
+				lstvwNotifications.setAdapter(adapter);
+				
+				lstvwNotifications.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+							long arg3) {
+						Toast.makeText(activity, "selected " + arg2, Toast.LENGTH_SHORT).show();
+					}
+				});
+			};
+		}.execute(url);
+	}
 }
