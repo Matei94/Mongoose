@@ -9,24 +9,27 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import ro.hackzurich.mongoose.MainActivity.PlaceholderFragment;
 import ro.hackzurich.mongoose.entity.Cause;
 import ro.hackzurich.mongoose.entity.CauseWrapper;
 import ro.hackzurich.mongoose.entity.Notification;
 import ro.hackzurich.mongoose.entity.NotificationWrapper;
-
+import ro.hackzurich.mongoose.settings.Settings;
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class FragmentsController {
-	private static boolean fetchedCauses = false;
-	
 	private List<String> challengesList = new ArrayList<String>();
 	private List<String> notificationsList = new ArrayList<String>();
 	
@@ -108,6 +111,23 @@ public class FragmentsController {
 	
 	private void setUpRanking() {
 		TextView tv = (TextView) activity.findViewById(R.id.txtvwRanking);
+		Button btnAux = (Button) activity.findViewById(R.id.btnAux);
+		
+		btnAux.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View arg0) {
+				FragmentManager fragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();
+				fragmentManager
+						.beginTransaction()
+						.replace(
+								R.id.container,
+								PlaceholderFragment.newInstance(0,
+										R.layout.camera))
+						.commit();
+			}
+		});
+		
+		
 		tv.setText("Ranking Programatically");
 	}
 
@@ -188,7 +208,8 @@ public class FragmentsController {
 	
 	private void setUpNotificationsFragment() {
 		String urlString = "http://172.27.5.129:8080/mongoose/webresources/" + 
-				"ro.hackzurich.mongoose.entity.notification";
+				"ro.hackzurich.mongoose.entity.notification/" + 
+				Settings.getUserId() + "/notifications";
 		URL url = null;
 		
 		try {
