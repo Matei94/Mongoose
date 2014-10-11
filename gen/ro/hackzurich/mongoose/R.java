@@ -1103,7 +1103,6 @@ containing a value of this type.
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
-        public static final int btnLogin=0x7f050043;
         public static final int btnScore=0x7f050046;
         public static final int checkbox=0x7f05002d;
         public static final int collapseActionView=0x7f05000d;
@@ -1124,6 +1123,7 @@ containing a value of this type.
         public static final int image=0x7f050027;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f050029;
+        public static final int login_fragment=0x7f050043;
         public static final int middle=0x7f050012;
         public static final int navigation_drawer=0x7f05003e;
         public static final int never=0x7f050009;
@@ -1267,6 +1267,7 @@ containing a value of this type.
         public static final int abc_shareactionprovider_share_with_application=0x7f0a000b;
         public static final int action_example=0x7f0a0013;
         public static final int action_settings=0x7f0a0014;
+        public static final int app_id=0x7f0a0015;
         public static final int app_name=0x7f0a000d;
         public static final int navigation_drawer_close=0x7f0a0012;
         public static final int navigation_drawer_open=0x7f0a0011;
