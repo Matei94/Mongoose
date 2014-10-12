@@ -1,16 +1,92 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    tools:ignore="NestedWeights" 
+    tools:context="ro.hackzurich.mongoose.MainActivity$PlaceholderFragment"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="ro.hackzurich.mongoose.MainActivity$PlaceholderFragment" >
+    android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CAMERA" />
+    <LinearLayout
+		android:layout_height="0dp"
+		android:layout_width="fill_parent"
+		android:layout_weight="25"
+		android:orientation="horizontal" >
+		
+		<Button 
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/btnText"
+            android:id="@+id/btnText" />
+        
+		<Button 
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/btnPicture"
+            android:id="@+id/btnPicture" />
+		
+		<Button 
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/btnVideo"
+            android:id="@+id/btnVideo" />
+		
+	</LinearLayout>
+	
+	<Button 
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="15"
+            android:text="@string/btnLocal"
+            android:id="@+id/btnLocal" />
 
-</RelativeLayout>
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="5" />
+
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="40"
+	    android:id="@+id/viewPreview"
+	     />
+	
+	<View
+	    android:layout_width="fill_parent"
+	    android:layout_height="0dp"
+	    android:layout_weight="5" />
+		
+	<LinearLayout
+		android:layout_height="0dp"
+		android:layout_width="fill_parent"
+		android:layout_weight="10"
+		android:orientation="horizontal" >
+		
+		<Button 
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/btnAccept"
+            android:id="@+id/btnAccept" />
+        
+		<View
+		    android:layout_width="0dp"
+		    android:layout_height="match_parent"
+		    android:layout_weight="3" />
+			
+		<Button 
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/btnCancel"
+            android:id="@+id/btnCancel" />
+	</LinearLayout>
+
+</LinearLayout>

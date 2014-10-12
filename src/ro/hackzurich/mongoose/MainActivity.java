@@ -1,13 +1,16 @@
 package ro.hackzurich.mongoose;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import ro.hackzurich.mongoose.settings.CameraSettings;
 import ro.hackzurich.mongoose.settings.Settings;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -160,6 +163,21 @@ public class MainActivity extends ActionBarActivity implements
 			super.onActivityCreated(savedInstanceState);
 			new FragmentsController(getActivity(), fragmentId);
 		}
+		
+		@Override
+		public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+			super.onActivityResult(requestCode, resultCode, intent);
+			if(requestCode == CameraSettings.TAKE_PICTURE) {
+				if(resultCode == Activity.RESULT_OK) {
+					CameraSettings.setCameraPreview(CameraSettings.TAKE_PICTURE);
+				} else if ( resultCode == Activity.RESULT_CANCELED ) {
+					File pic = CameraSettings.getOutFile();
+					pic.delete();
+				}
+				CameraSettings.setActivityThis();
+			}
+		}
+		
 	}
 
 }

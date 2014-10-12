@@ -1,6 +1,7 @@
 package ro.hackzurich.mongoose;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -16,20 +17,31 @@ import ro.hackzurich.mongoose.entity.Notification;
 import ro.hackzurich.mongoose.entity.NotificationWrapper;
 import ro.hackzurich.mongoose.entity.Pending;
 import ro.hackzurich.mongoose.entity.PendingWrapper;
+import ro.hackzurich.mongoose.settings.CameraSettings;
 import ro.hackzurich.mongoose.settings.Settings;
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 public class FragmentsController {
 	/* ListViews data*/
@@ -74,9 +86,11 @@ public class FragmentsController {
 		case R.layout.ranking:
 			setUpRanking();
 			break;
-			
 		case R.layout.challenge:
 			setUpChallenge();
+			break;
+		case R.layout.camera:
+			setUpCamera();
 			break;
 		default:
 			Log.d("MONGOOSE", "Unexpected behaviour. fragmentId = " + 
@@ -401,9 +415,88 @@ public class FragmentsController {
 						.beginTransaction()
 						.replace(
 								R.id.container,
-								PlaceholderFragment.newInstance(0, R.layout.paypal))
+								PlaceholderFragment.newInstance(0, R.layout.camera))
 						.commit();
 			}
 		});
 	}
+	
+	public void setUpCamera() {
+		
+		CameraSettings.setActivity(activity);
+		
+		Button btnText    = (Button) activity.findViewById(R.id.btnText);
+		Button btnPicture = (Button) activity.findViewById(R.id.btnPicture);
+		Button btnVideo   = (Button) activity.findViewById(R.id.btnVideo);
+		Button btnLocal   = (Button) activity.findViewById(R.id.btnLocal);
+		Button btnAccept  = (Button) activity.findViewById(R.id.btnAccept);
+		Button btnCancel  = (Button) activity.findViewById(R.id.btnCancel);
+		
+		btnText.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO
+			}
+		});
+		
+		btnPicture.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				CameraSettings.setActivityPhoto();
+				Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+				CameraSettings.setOutFile(
+						new File( Environment.getExternalStoragePublicDirectory(
+									Environment.DIRECTORY_PICTURES), 
+								  CameraSettings.generateFilename() + ".jpg")
+						);
+				
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(CameraSettings.getOutFile()));
+				activity.startActivityForResult(intent, CameraSettings.TAKE_PICTURE);
+			}
+		});
+		
+		btnVideo.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				CameraSettings.setSuccessFlag(false);
+				CameraSettings.setActivityRecording();
+				Intent recordVideo = new Intent("com.hz.CHALLENGEACCEPTEDRECORDVIDEO");
+				activity.startActivity(recordVideo);
+				
+				// pause
+			}
+		});
+		
+		btnLocal.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO at a later time
+				
+			}
+		});
+		
+		btnAccept.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO
+				
+			}
+		});
+
+		btnCancel.setOnClickListener(new OnClickListener() {
+						
+			@Override
+			public void onClick(View arg0) {
+				
+				// TODO check this
+			}
+		});
+		
+	}
+
 }
