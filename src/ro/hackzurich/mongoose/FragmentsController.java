@@ -3,6 +3,7 @@ package ro.hackzurich.mongoose;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,6 +19,7 @@ import ro.hackzurich.mongoose.entity.Pending;
 import ro.hackzurich.mongoose.entity.PendingWrapper;
 import ro.hackzurich.mongoose.settings.Settings;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -30,6 +32,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.paypal.android.sdk.ac;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
 
 public class FragmentsController {
 	/* ListViews data*/
@@ -77,6 +85,9 @@ public class FragmentsController {
 			
 		case R.layout.challenge:
 			setUpChallenge();
+			break;
+		case R.layout.paypal:
+			setUpPaypal();
 			break;
 		default:
 			Log.d("MONGOOSE", "Unexpected behaviour. fragmentId = " + 
@@ -405,5 +416,22 @@ public class FragmentsController {
 						.commit();
 			}
 		});
+	}
+	
+	private void setUpPaypal() {
+		PayPalConfiguration config = new PayPalConfiguration()
+	    .environment(PayPalConfiguration.ENVIRONMENT_NO_NETWORK)
+	    .clientId("AYNZXBB9-C5TvuB_dbNlRfitgvL_3aXeJ_Gn8rN9JbqRNS-9XWUOkm45wP7S");
+
+		
+		Intent intent = new Intent(activity, PayPalService.class);
+	    intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+	    activity.startService(intent);
+	    
+	    PayPalPayment payment = new PayPalPayment(new BigDecimal("1.75"), "USD", "hipster jeans",
+	 			PayPalPayment.PAYMENT_INTENT_SALE);
+	    Intent i = new Intent(activity, PaymentActivity.class);
+	    i.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+	    activity.startActivityForResult(i, 0);
 	}
 }
