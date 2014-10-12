@@ -197,7 +197,14 @@ public class FragmentsController {
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 							long arg3) {
-						Toast.makeText(activity, "selected " + arg2, Toast.LENGTH_SHORT).show();
+						FragmentManager fragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();
+						fragmentManager
+								.beginTransaction()
+								.replace(
+										R.id.container,
+										PlaceholderFragment.newInstance(0,
+												R.layout.challenge))
+								.commit();
 					}
 				});
 			};
