@@ -45,6 +45,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.facebook.Session;
 import com.paypal.android.sdk.ac;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
@@ -122,41 +123,27 @@ public class FragmentsController {
 	private void setUpLogOutFragment() {
 		TextView tv = (TextView) activity.findViewById(R.id.txtvwLogout);
 		tv.setText("LogOut Programatically");
+		Session.getActiveSession().closeAndClearTokenInformation();
+		Session.setActiveSession(null);
+		activity.finish();
 	}
 	
 	private void setUpRanking() {
-		TextView tv = (TextView) activity.findViewById(R.id.txtvwRanking);
-		Button btnAux = (Button) activity.findViewById(R.id.btnAux);
-		Button btnNicu = (Button) activity.findViewById(R.id.btnNicu);
+		ListView lstvwRanking = 
+				(ListView) activity.findViewById(R.id.lstvwRanking);
 		
-		btnAux.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				FragmentManager fragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();
-				fragmentManager
-						.beginTransaction()
-						.replace(
-								R.id.container,
-								PlaceholderFragment.newInstance(0, R.layout.camera))
-						.commit();
-			}
-		});
+		if (lstvwRanking == null) return;
 		
-		btnNicu.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				FragmentManager fragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();
-				fragmentManager
-						.beginTransaction()
-						.replace(
-								R.id.container,
-								PlaceholderFragment.newInstance(0,
-										R.layout.unicu))
-						.commit();
-			}
-		});
+		MyArrayAdapter adapter = new MyArrayAdapter(activity, 
+				new String[] {
+					"Matei           score: 42",
+					"Alin              score: 37",
+					"Nicu              score: 19",
+					"Bogdan         score: 7"
+				}
+		);
 		
-		tv.setText("Ranking Programatically");
+		lstvwRanking.setAdapter(adapter);
 	}
 
 	private void setUpChallengesFragment() {

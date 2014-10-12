@@ -8,26 +8,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ro.hackzurich.mongoose.MainActivity$PlaceholderFragment" >
 
-    <TextView
-        android:id="@+id/txtvwRanking"
+    <ListView
+        android:id="@+id/lstvwRanking"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ranking" />
-
-    <Button
-        android:id="@+id/btnAux"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Auxiliar" />
-
-    <Button
-        android:id="@+id/btnNicu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="uNicu" />
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>
