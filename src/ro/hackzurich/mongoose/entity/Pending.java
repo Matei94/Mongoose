@@ -11,8 +11,7 @@ public class Pending {
 	
 	@Override
 	public String toString() {
-		return causeId + ", " + fromId + ", " + id + ", " + imageUrl + ", " +
-				status + ", " + toId + ", " + videoUrl;
+		return causeId + "";
 	}
 	
 	public int getCauseId() {

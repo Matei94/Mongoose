@@ -9,7 +9,7 @@ public class Notification {
 	
 	@Override
 	public String toString() {
-		return id + ", " + fromId + ", " + toId + ", " + type + ", " + date;
+		return "From: " + fromId;
 	}
 	
 	public long getId() {

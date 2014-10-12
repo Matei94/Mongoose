@@ -407,13 +407,7 @@ public class FragmentsController {
 		btnNow.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				FragmentManager fragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();
-				fragmentManager
-						.beginTransaction()
-						.replace(
-								R.id.container,
-								PlaceholderFragment.newInstance(0, R.layout.paypal))
-						.commit();
+				setUpPaypal();
 			}
 		});
 	}

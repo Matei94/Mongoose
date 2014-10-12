@@ -9,8 +9,7 @@ public class Cause {
 	
 	@Override
 	public String toString() {
-		return description + ", " + hits + ", " + id + ", " + ", " +
-				title + ", " + type;
+		return title;
 	}
 	
 	public String getDescription() {
