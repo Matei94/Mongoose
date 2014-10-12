@@ -9,6 +9,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.model.GraphObject;
+
 import ro.hackzurich.mongoose.MainActivity.PlaceholderFragment;
 import ro.hackzurich.mongoose.entity.Cause;
 import ro.hackzurich.mongoose.entity.CauseWrapper;
@@ -131,17 +139,35 @@ public class FragmentsController {
 		btnNicu.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				FragmentManager fragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();
-				fragmentManager
-						.beginTransaction()
-						.replace(
-								R.id.container,
-								PlaceholderFragment.newInstance(0,
-										R.layout.unicu))
-						.commit();
+				new AsyncTask<Void, Integer, Response>() {
+					@Override
+					protected Response doInBackground(Void... params) {
+						Request req = new Request(Session.getActiveSession(), "/me/taggable_friends");
+						return req.executeAndWait();
+					}
+					
+					protected void onPostExecute(Response result) {
+						try {
+                            JSONArray dataArray = result.getGraphObject().getInnerJSONObject().getJSONArray("data");
+                            ArrayList<String> names = new ArrayList<String>();
+                            ArrayList<String> tags = new ArrayList<String>();
+                            for (int i = 0; i < dataArray.length(); i++) {
+                            	names.add(dataArray.getJSONObject(i).getString("name"));
+                            	tags.add(dataArray.getJSONObject(i).getString("id"));
+                            }
+                            
+                            for (int i = 0; i < names.size();i++) {
+                            	Log.i("NAME", names.get(i));
+                            	Log.i("NAME", tags.get(i));
+                            }
+						} catch (JSONException e) {
+						}
+					}
+				}.execute();	
+				
 			}
 		});
-		
+
 		tv.setText("Ranking Programatically");
 	}
 

@@ -6,8 +6,11 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
+import com.facebook.model.GraphUser;
 import com.facebook.widget.UserSettingsFragment;
 
 public class Login extends FragmentActivity {
@@ -33,5 +36,4 @@ public class Login extends FragmentActivity {
          Intent mainActivityIntent = new Intent(this, MainActivity.class);
          startActivity(mainActivityIntent);
 	 }
-	
 }

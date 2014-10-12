@@ -5,6 +5,8 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="lib" path="/home/matei/Dropbox/HackZurich/Mongoose/libs/gson-2.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="/home/nicu/Documents/projects/android/Mongoose/libs/gson-2.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="/home/nicu/Documents/projects/android/Mongoose/libs/gcm.jar"/>
+	<classpathentry exported="true" kind="lib" path="/home/nicu/Documents/projects/android/Mongoose/libs/gcm-src.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
