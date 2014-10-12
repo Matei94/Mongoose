@@ -73,6 +73,7 @@ public class CameraSettings {
 	}
 	
 	public static void setCameraPreview(int type) {
+		activity.setContentView(R.layout.camera);
 		View preview = (View) activity.findViewById(R.id.viewPreview);
 		ViewGroup parent = (ViewGroup) preview.getParent();
 		LayoutParams lp = preview.getLayoutParams();

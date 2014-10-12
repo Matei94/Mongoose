@@ -181,7 +181,7 @@ public class MainActivity extends ActionBarActivity implements
 		super.onActivityResult(requestCode, resultCode, data);
 		if(requestCode == CameraSettings.TAKE_PICTURE) {
 			if(resultCode == Activity.RESULT_OK) {
-
+				CameraSettings.setCameraPreview(CameraSettings.TAKE_PICTURE);
 			} else if ( resultCode == Activity.RESULT_CANCELED ) {
 				File pic = CameraSettings.getOutFile();
 				pic.delete();
