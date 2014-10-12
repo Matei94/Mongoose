@@ -6,6 +6,9 @@ public class Settings {
 	private static String username = "";
 	private static int score = 42;
 	private static String userId = "23";
+	
+	private static int challengeId = 0;
+	private static String challengeDesc = "No description available";
 
 	/* Getters */
 	public static String getUsername() {
@@ -20,6 +23,14 @@ public class Settings {
 		return userId;
 	}
 	
+	public static int getChallengeId() {
+		return challengeId;
+	}
+	
+	public static String getChallengeDesc() {
+		return challengeDesc;
+	}
+	
 	/* Setters */
 	public static void setUsername(String username) {
 		Settings.username = username;
@@ -31,5 +42,13 @@ public class Settings {
 	
 	public static void setUserId(String userId) {
 		Settings.userId = userId;
+	}
+	
+	public static void setChallengeId(int challengeId) {
+		Settings.challengeId = challengeId;
+	}
+	
+	public static void setChallengeDesc(String challengeDesc) {
+		Settings.challengeDesc = challengeDesc;
 	}
 }

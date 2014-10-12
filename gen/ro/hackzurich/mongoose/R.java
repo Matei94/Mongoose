@@ -1380,18 +1380,19 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f050021;
         public static final int action_menu_presenter=0x7f050022;
         public static final int action_mode_close_button=0x7f05002f;
-        public static final int action_settings=0x7f050074;
+        public static final int action_settings=0x7f050075;
         public static final int activity_chooser_view_content=0x7f050030;
         public static final int always=0x7f050016;
         public static final int beginning=0x7f05001c;
         public static final int bottom=0x7f050006;
         public static final int box_count=0x7f050005;
-        public static final int btnAux=0x7f050072;
+        public static final int btnAux=0x7f050073;
         public static final int btnDismiss=0x7f05004c;
+        public static final int btnDonate=0x7f050071;
         public static final int btnLater=0x7f05004b;
-        public static final int btnNicu=0x7f050073;
+        public static final int btnNicu=0x7f050074;
         public static final int btnNow=0x7f05004a;
-        public static final int btnScore=0x7f050075;
+        public static final int btnScore=0x7f050076;
         public static final int button=0x7f050004;
         public static final int center=0x7f050009;
         public static final int checkbox=0x7f050038;
@@ -1483,7 +1484,7 @@ containing a value of this type.
         public static final int txtvwDescription=0x7f05004d;
         public static final int txtvwLogout=0x7f05006b;
         public static final int txtvwNotification=0x7f050070;
-        public static final int txtvwRanking=0x7f050071;
+        public static final int txtvwRanking=0x7f050072;
         public static final int up=0x7f05002c;
         public static final int useLogo=0x7f05000e;
         public static final int withText=0x7f050017;
@@ -1564,9 +1565,10 @@ containing a value of this type.
         public static final int fragment_pendings=0x7f03002f;
         public static final int login=0x7f030030;
         public static final int notification_item=0x7f030031;
-        public static final int ranking=0x7f030032;
-        public static final int support_simple_spinner_dropdown_item=0x7f030033;
-        public static final int unicu=0x7f030034;
+        public static final int paypal=0x7f030032;
+        public static final int ranking=0x7f030033;
+        public static final int support_simple_spinner_dropdown_item=0x7f030034;
+        public static final int unicu=0x7f030035;
     }
     public static final class menu {
         public static final int global=0x7f0c0000;

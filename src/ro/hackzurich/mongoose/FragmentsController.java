@@ -37,6 +37,8 @@ public class FragmentsController {
 	private List<String> notificationsList = new ArrayList<String>();
 	private List<String> pendingsList = new ArrayList<String>();
 	
+	private List<String> challengesDescription = new ArrayList<String>();
+	
 	
 	/* Needed for findViewById */
 	private Activity activity;
@@ -72,6 +74,10 @@ public class FragmentsController {
 		case R.layout.ranking:
 			setUpRanking();
 			break;
+			
+		case R.layout.challenge:
+			setUpChallenge();
+			break;
 		default:
 			Log.d("MONGOOSE", "Unexpected behaviour. fragmentId = " + 
 					fragmentId);
@@ -106,8 +112,7 @@ public class FragmentsController {
 						.beginTransaction()
 						.replace(
 								R.id.container,
-								PlaceholderFragment.newInstance(0,
-										R.layout.camera))
+								PlaceholderFragment.newInstance(0, R.layout.camera))
 						.commit();
 			}
 		});
@@ -173,6 +178,7 @@ public class FragmentsController {
 					
 					for(Cause c : causeList) {
 						challengesList.add(c.toString());
+						challengesDescription.add(c.getDescription());
 					}
 				} catch (IOException e) {
 					Log.e("MONGOOSE", "Connection error: " + e);
@@ -197,6 +203,10 @@ public class FragmentsController {
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 							long arg3) {
+						
+						Settings.setChallengeId(arg2);
+						Settings.setChallengeDesc(challengesDescription.get(arg2));
+						
 						FragmentManager fragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();
 						fragmentManager
 								.beginTransaction()
@@ -373,5 +383,27 @@ public class FragmentsController {
 				});
 			};
 		}.execute(url);
+	}
+	
+	public void setUpChallenge() {
+		TextView txtvwDescription = (TextView) activity.findViewById(R.id.txtvwDescription);
+		Button btnNow = (Button) activity.findViewById(R.id.btnNow);
+		Button btnLater = (Button) activity.findViewById(R.id.btnLater);
+		Button btnDismiss = (Button) activity.findViewById(R.id.btnDismiss);
+		
+		txtvwDescription.setText(Settings.getChallengeDesc());
+		
+		btnNow.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				FragmentManager fragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();
+				fragmentManager
+						.beginTransaction()
+						.replace(
+								R.id.container,
+								PlaceholderFragment.newInstance(0, R.layout.paypal))
+						.commit();
+			}
+		});
 	}
 }
