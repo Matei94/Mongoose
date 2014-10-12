@@ -1,6 +1,7 @@
 package ro.hackzurich.mongoose;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
@@ -17,21 +18,32 @@ import ro.hackzurich.mongoose.entity.Notification;
 import ro.hackzurich.mongoose.entity.NotificationWrapper;
 import ro.hackzurich.mongoose.entity.Pending;
 import ro.hackzurich.mongoose.entity.PendingWrapper;
+import ro.hackzurich.mongoose.settings.CameraSettings;
 import ro.hackzurich.mongoose.settings.Settings;
 import android.app.Activity;
 import android.content.Intent;
+
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.paypal.android.sdk.ac;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
@@ -82,12 +94,14 @@ public class FragmentsController {
 		case R.layout.ranking:
 			setUpRanking();
 			break;
-			
 		case R.layout.challenge:
 			setUpChallenge();
 			break;
 		case R.layout.paypal:
 			setUpPaypal();
+			break;
+		case R.layout.camera:
+			setUpCamera();
 			break;
 		default:
 			Log.d("MONGOOSE", "Unexpected behaviour. fragmentId = " + 
@@ -407,7 +421,13 @@ public class FragmentsController {
 		btnNow.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				setUpPaypal();
+				FragmentManager fragmentManager = ((FragmentActivity) activity).getSupportFragmentManager();
+				fragmentManager
+						.beginTransaction()
+						.replace(
+								R.id.container,
+								PlaceholderFragment.newInstance(0, R.layout.camera))
+						.commit();
 			}
 		});
 	}
@@ -416,16 +436,90 @@ public class FragmentsController {
 		PayPalConfiguration config = new PayPalConfiguration()
 	    .environment(PayPalConfiguration.ENVIRONMENT_NO_NETWORK)
 	    .clientId("AYNZXBB9-C5TvuB_dbNlRfitgvL_3aXeJ_Gn8rN9JbqRNS-9XWUOkm45wP7S");
-
 		
 		Intent intent = new Intent(activity, PayPalService.class);
 	    intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
 	    activity.startService(intent);
 	    
-	    PayPalPayment payment = new PayPalPayment(new BigDecimal("1.75"), "USD", "hipster jeans",
+	    PayPalPayment payment = new PayPalPayment(new BigDecimal("10.0"), "USD", "ALS",
 	 			PayPalPayment.PAYMENT_INTENT_SALE);
 	    Intent i = new Intent(activity, PaymentActivity.class);
 	    i.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
-	    activity.startActivityForResult(i, 0);
+	    activity.startActivityForResult(i, 42);
 	}
+
+	public void setUpCamera() {	
+		CameraSettings.setActivity(activity);
+		
+		Button btnText    = (Button) activity.findViewById(R.id.btnText);
+		Button btnPicture = (Button) activity.findViewById(R.id.btnPicture);
+		Button btnVideo   = (Button) activity.findViewById(R.id.btnVideo);
+		Button btnLocal   = (Button) activity.findViewById(R.id.btnLocal);
+		Button btnAccept  = (Button) activity.findViewById(R.id.btnAccept);
+		Button btnCancel  = (Button) activity.findViewById(R.id.btnCancel);
+		
+		btnText.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO
+			}
+		});
+		
+		btnPicture.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				CameraSettings.setActivityPhoto();
+				Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+				CameraSettings.setOutFile(
+						new File( Environment.getExternalStoragePublicDirectory(
+									Environment.DIRECTORY_PICTURES), 
+								  CameraSettings.generateFilename() + ".jpg")
+						);
+				
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(CameraSettings.getOutFile()));
+				activity.startActivityForResult(intent, CameraSettings.TAKE_PICTURE);
+			}
+		});
+		
+		btnVideo.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				CameraSettings.setSuccessFlag(false);
+				CameraSettings.setActivityRecording();
+				
+				Intent recordVideo = new Intent("android.media.action.VIDEO_CAPTURE");
+				activity.startActivityForResult(recordVideo, 128);
+			}
+		});
+		
+		btnLocal.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO at a later time
+				
+			}
+		});
+		
+		btnAccept.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setUpPaypal();
+			}
+		});
+
+		btnCancel.setOnClickListener(new OnClickListener() {
+						
+			@Override
+			public void onClick(View arg0) {
+				
+				// TODO check this
+			}
+		});
+		
+	}
+
 }

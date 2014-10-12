@@ -1,15 +1,20 @@
 package ro.hackzurich.mongoose;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 
 import org.json.JSONException;
 
+import ro.hackzurich.mongoose.settings.CameraSettings;
 import ro.hackzurich.mongoose.settings.Settings;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -173,27 +178,40 @@ public class MainActivity extends ActionBarActivity implements
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == Activity.RESULT_OK) {
-	        PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
-	        if (confirm != null) {
-	            try {
-	                Log.i("MONGOOSE", confirm.toJSONObject().toString(4));
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode == CameraSettings.TAKE_PICTURE) {
+			if(resultCode == Activity.RESULT_OK) {
 
-	                // TODO: send 'confirm' to your server for verification.
-	                // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
-	                // for more details.
-
-	            } catch (JSONException e) {
-	                Log.e("MONGOOSE", "an extremely unlikely failure occurred: ", e);
-	            }
-	        }
-	    }
-	    else if (resultCode == Activity.RESULT_CANCELED) {
-	        Log.i("MONGOOSE", "The user canceled.");
-	    }
-	    else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
-	        Log.i("MONGOOSE", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
-	    }
+			} else if ( resultCode == Activity.RESULT_CANCELED ) {
+				File pic = CameraSettings.getOutFile();
+				pic.delete();
+			}
+			CameraSettings.setActivityThis();
+		} else if (requestCode == 42) { //Photo 
+			if (resultCode == Activity.RESULT_OK) {
+		        PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+		        if (confirm != null) {
+		            try {
+		                Log.i("MONGOOSE", confirm.toJSONObject().toString(4));
+	
+		                // TODO: send 'confirm' to your server for verification.
+		                // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
+		                // for more details.
+	
+		            } catch (JSONException e) {
+		                Log.e("MONGOOSE", "an extremely unlikely failure occurred: ", e);
+		            }
+		        }
+		    }
+		    else if (resultCode == Activity.RESULT_CANCELED) {
+		        Log.i("MONGOOSE", "The user canceled.");
+		    }
+		    else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+		        Log.i("MONGOOSE", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+		    }
+		} else if (requestCode == 128) { // VIDEO
+			
+		}
 	}
 
 }

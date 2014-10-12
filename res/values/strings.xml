@@ -11,4 +11,20 @@
     <string name="action_settings">Settings</string>
     <string name="app_id">339906879523768</string>
 
+    <string name="btnText">Text</string>
+	<string name="btnPicture">Picture</string>
+	<string name="btnVideo">Video</string>
+	<string name="btnLocal">Select local file</string>
+	<string name="btnAccept">OK</string>
+	<string name="btnCancel">X</string>
+    
+	<string name="btnRec">o</string>
+	<string name="btnStop">[]</string>
+	<string name="btnPause">||</string>
+	<string name="btnPlay">|></string>
+	
+	<string name="btnVideoOk">OK</string>
+	<string name="btnVideoCancel">X</string>
+	<color name="white">#000000</color>
+	
 </resources>
